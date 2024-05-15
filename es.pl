@@ -123,17 +123,28 @@ seqR2(Max, Init, cons(Init, T)) :- seqR2(Max, s(Init), T).
 last(cons(H, nil), H).
 last(cons(H, T), E) :- last(T, E).
 % map
+% test: map(cons(zero, cons(zero, nil)), X).
+% test: map(cons(zero, cons(s(zero), nil)), X).
+% test: map(cons(s(s(zero)), cons(s(zero), nil)), X).
+% test: map(X, cons(s(s(zero)), cons(s(zero), nil))).
+inc(A, s(A)).
+dec(s(A), A).
+map(nil, nil).
+map(cons(H, T), cons(H1, T1)) :- inc(H, H1), map(T, T1).
 % filter
+filter(L, FL) :- filter(nil, nil, FL)
+filter(nil, FL, FL)
+filter(L, ) :- 
 % count
-
 % find
 % dropRight
 % dropWhile
 % partition
 % reversed
-reversed(L, RL) :- reversed(L, RL, nil).
+% test: 
+reversed(L, RL) :- reversed(L, nil, RL).
 reversed(nil, RL, RL).
-reversed(cons(H, T), RL, M) :- reversed(T, RL, cons(H, M)).
+reversed(cons(H, T), M, RL) :- reversed(T, cons(H, M), RL).
 % drop
 % take
 % zip
