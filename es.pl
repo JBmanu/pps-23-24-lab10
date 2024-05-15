@@ -147,7 +147,11 @@ count(L, C) :- filter(L, FL), size(FL, C).
 countA(nil, C, C).
 countA(cons(H, T), Temp, C) :- g(H, zero), countA(T, s(Temp), C).
 countA(cons(H, T), Temp, C) :- countA(T, Temp, C).
-% find
+% FIND
+% test: find(cons(1, cons(2, cons(3, nil))), X).
+%find(L, E) :- search(E, L).
+find(cons(H, T), H).
+find(cons(H, T), E) :- find(T, E).
 % dropRight
 % dropWhile
 % partition
@@ -157,6 +161,10 @@ countA(cons(H, T), Temp, C) :- countA(T, Temp, C).
 reversed(L, RL) :- reversed(L, nil, RL).
 reversed(nil, RL, RL).
 reversed(cons(H, T), M, RL) :- reversed(T, cons(H, M), RL).
-% drop
-% take
-% zip
+% DROP
+% TAKE: take(n)
+% test: take(cons(1, cons(2, cons(3, nil))), s(zero), X).
+%take(L, N, TL) :- takeT(L, nil, TL).
+%takeT(Remain, TL, TL).
+%takeT(cons(H, T), Temp, TL) :- takeT(T, cons(H, Temp), TL).
+% ZIP
