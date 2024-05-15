@@ -1,12 +1,12 @@
 % es: 1.1
 % test: search(a, cons(a,cons(b,cons(c,nil)))). YES
 % test: search(a, cons(c,cons(d,cons(e,nil)))). NO
-search(X , cons (X , _)).
-search (X , cons (_ , Xs )) :- search (X , Xs ).
+search(X, cons(X, _)).
+search(X, cons(_, Xs)) :- search(X, Xs).
 
 % es: 1.2
-search2 (X , cons (X , cons (X , _))).
-search2 (X , cons (_ , Xs )) :- search2 (X , Xs).
+search2(X, cons(X, cons(X, _))).
+search2(X, cons(_, Xs)) :- search2(X, Xs).
 
 % es: 1.3
 search_two(X, cons(X, cons(_, cons(X, _)))).
@@ -50,12 +50,15 @@ g(A, zero).
 g(s(A), s(B)) :- isNum(A), A\=zero, g(A, B).
 % l: A < B
 l(A, B) :- g(B, A).
+% e: A = B
+e(zero, zero).
+e(s(A), s(B)) :- isNum(A), isNum(B), e(A, B).
+
 % test:	max(cons(zero, cons(s(zero), nil)), X).
 % test:	max(cons(s(zero), cons(zero, nil)), X).
 % test: maxTest(cons(zero, cons(s(s(zero)), nil)), X).
-maxTest(cons(H, T), M) :- maxTestTemp(T, H).
-maxTestTemp(nil, M).
-maxTestTemp(cons(H, T), M) :- isNum(H), isNum(M), maxTestTemp(T, H).
+maxTest(nil, M).
+maxTest(cons(H, T), M) :- ge(M, H), search(M, cons(H, T)), maxTest(T, M).
 
 max(List, Max) :- max(List, zero, Max).
 max(nil, Max, Max).
@@ -114,27 +117,23 @@ seqR2(Max, Max, nil).
 seqR2(Max, Init, cons(Init, T)) :- seqR2(Max, s(Init), T).
 
 % es: 5
-% termini
-
-
 % last: element in list
 % test: last(cons(s(zero), cons(s(s(zero)), nil)), X).
 % test: last(nil, X).
 last(cons(H, nil), H).
 last(cons(H, T), E) :- last(T, E).
 % map
-
 % filter
-filter(L, E, LF) :- filter(L, E, LF, nil).
-filter(nil, E, LF, LF).
-filter(cons(E, T), E, LF, Init) :- filter(T, E, LF, cons(E, Init)).
-
 % count
+
 % find
 % dropRight
 % dropWhile
 % partition
 % reversed
+reversed(L, RL) :- reversed(L, RL, nil).
+reversed(nil, RL, RL).
+reversed(cons(H, T), RL, M) :- reversed(T, RL, cons(H, M)).
 % drop
 % take
 % zip
