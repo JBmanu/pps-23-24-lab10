@@ -39,15 +39,17 @@ isNum(s(A)) :- isNum(A).
 % ge: A >= B
 % test: ge(s(s(s(zero))), X).
 % test: ge(X, s(s(s(zero)))).
-ge(A, zero).
-ge(s(A), s(B)) :- isNum(A), ge(A, B).
+ge(A, B) :- geT(s(A), s(B)).
+geT(A, zero).
+geT(s(A), s(B)) :- isNum(A), geT(A, B).
 % le: A <= B
 % test: le(s(s(s(zero))), X).
 % test: le(X, s(s(s(zero)))).
 le(A, B) :- ge(B, A).
 % g: A > B
-g(A, zero).
-g(s(A), s(B)) :- isNum(A), A\=zero, g(A, B).
+g(A, B) :- gT(s(A), s(B)).
+gT(A, zero).
+gT(s(A), s(B)) :- isNum(A), A\=zero, gT(A, B).
 % l: A < B
 l(A, B) :- g(B, A).
 % e: A = B
@@ -131,10 +133,13 @@ inc(A, s(A)).
 dec(s(A), A).
 map(nil, nil).
 map(cons(H, T), cons(H1, T1)) :- inc(H, H1), map(T, T1).
-% filter
-filter(L, FL) :- filter(nil, nil, FL).
+% FILTER: filter(_>0)
+% test: filter(cons(s(s(s(zero))), cons(s(zero), cons(zero, nil))), X).
+% test: filter(cons(s(zero), cons(zero, nil)), X).
+filter(L, FL) :- filter(L, nil, FL).
 filter(nil, FL, FL).
-filter(L).
+filter(cons(H, T), M, FL) :- g(s(H), s(zero)), filter(T, cons(H, M), FL).
+filter(cons(H, T), M, FL) :- filter(T, M, FL).
 % count
 % find
 % dropRight
