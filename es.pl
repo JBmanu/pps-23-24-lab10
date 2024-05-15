@@ -26,8 +26,8 @@ sum_list(cons(zero, T), X) :- sum_list(T, X).
 sum_list(cons(s(H), T), s(X)) :- sum_list(cons(H, T), X).
 
 % es: 2.3
-count(nil, E, N, N).
 count(List, E, N) :- count(List, E, zero, N).
+count(nil, E, N, N).
 count(cons(E, L), E, N, M) :- count(L, E, s(N), M).
 count(cons(E, L), E2, N, M) :- E \= E2, count(L, E2, N, M).
 
@@ -138,9 +138,15 @@ map(cons(H, T), cons(H1, T1)) :- inc(H, H1), map(T, T1).
 % test: filter(cons(s(zero), cons(zero, nil)), X).
 filter(L, FL) :- filter(L, nil, FL).
 filter(nil, FL, FL).
-filter(cons(H, T), M, FL) :- g(s(H), s(zero)), filter(T, cons(H, M), FL).
-filter(cons(H, T), M, FL) :- filter(T, M, FL).
-% count
+filter(cons(H, T), Temp, FL) :- g(H, zero), filter(T, cons(H, Temp), FL).
+filter(cons(H, T), Temp, FL) :- filter(T, Temp, FL).
+% COUNT: count(_>0)
+% test: count(cons(zero, cons(s(zero), cons(s(s(zero)), nil))), X).
+count(L, C) :- filter(L, FL), size(FL, C).
+%count(L, C) :- countA(L, zero, C).
+countA(nil, C, C).
+countA(cons(H, T), Temp, C) :- g(H, zero), countA(T, s(Temp), C).
+countA(cons(H, T), Temp, C) :- countA(T, Temp, C).
 % find
 % dropRight
 % dropWhile
