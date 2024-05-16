@@ -201,8 +201,7 @@ take(cons(H, T), TempN, N, TempL, TL) :- take(T, s(TempN), N, cons(H, TempL), TL
 % ZIP
 % cons(1, cons(2, cons(3, nil)))
 % test: zip(cons(1, cons(2, cons(3, nil))), cons(a, cons(b, cons(c, nil))), X).
-% ricodarti di fare reverse
-zip(L1, L2, ZL) :- size(L1, N), size(L2, N), zip(L1, L2, nil, ZL).
+zip(L1, L2, ZL) :- size(L1, N), size(L2, N), reversed(L1, RL1), reversed(L2, RL2), zip(RL1, RL2, nil, ZL).
 zip(nil, nil, ZL, ZL).
 zip(cons(H, T), cons(H1, T1), Temp, ZL) :- zip(T, T1, cons((H, H1), Temp), ZL).
 
