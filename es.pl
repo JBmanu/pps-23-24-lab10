@@ -131,12 +131,13 @@ last(cons(H, T), E) :- last(T, E).
 % test: map(X, cons(s(s(zero)), cons(s(zero), nil))).
 inc(A, s(A)).
 dec(s(A), A).
+map(A, B) :- reversed(A, RA), reversed(B, RB), mapT(RA, RB).
 map(nil, nil).
-map(cons(H, T), cons(H1, T1)) :- inc(H, H1), map(T, T1).
+mapT(cons(H, T), cons(H1, T1)) :- inc(H, H1), map(T, T1).
 % FILTER: filter(_>0)
 % test: filter(cons(s(s(s(zero))), cons(s(zero), cons(zero, nil))), X).
 % test: filter(cons(s(zero), cons(zero, nil)), X).
-filter(L, FL) :- filter(L, nil, FL).
+filter(L, FL) :- reversed(L, RL), filter(RL, nil, FL).
 filter(nil, FL, FL).
 filter(cons(H, T), Temp, FL) :- g(H, zero), filter(T, cons(H, Temp), FL).
 filter(cons(H, T), Temp, FL) :- filter(T, Temp, FL).
@@ -193,20 +194,16 @@ drop(cons(H, T), N, TempL, DL) :- size(T, N), drop(T, N, T, DL).
 drop(cons(H, T), N, TempL, DL) :- drop(T, N, TempL, DL).
 % TAKE: take(n)
 % test: take(cons(1, cons(2, cons(3, nil))), s(s(zero)), X).
-% test: take(cons(1, cons(2, cons(3, nil))), X, cons(2, cons(1, nil))).
-% ricodarti di fare reverse
-take(L, N, TL) :- take(L, zero, N, nil, TL).
-take(L1, N, N, TL, TL).
-take(cons(H, T), TempN, N, TempL, TL) :- take(T, s(TempN), N, cons(H, TempL), TL).
-% ZIP
-% cons(1, cons(2, cons(3, nil)))
+take(L, N, TL) :- size(L, SL), diff(SL, N, D), dropRight(L, D, TL).
+% ZIP: l1.zip(l2)
 % test: zip(cons(1, cons(2, cons(3, nil))), cons(a, cons(b, cons(c, nil))), X).
 zip(L1, L2, ZL) :- size(L1, N), size(L2, N), reversed(L1, RL1), reversed(L2, RL2), zip(RL1, RL2, nil, ZL).
 zip(nil, nil, ZL, ZL).
 zip(cons(H, T), cons(H1, T1), Temp, ZL) :- zip(T, T1, cons((H, H1), Temp), ZL).
 
-
-
+%diff
+diff(D, zero, D).
+diff(s(A), s(B), D) :- ge(A, B), diff(A, B, D).
 
 
 
