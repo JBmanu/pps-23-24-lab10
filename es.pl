@@ -154,8 +154,14 @@ find(cons(H, T), H).
 find(cons(H, T), E) :- find(T, E).
 % DROP_RIGHT
 
-% DROP_WHILE
-
+% DROP_WHILE: dropWhile(_>0)
+% test: dropWhile(cons(s(zero), cons(s(s(zero)), cons(zero, nil))), X).
+% test: dropWhile(cons(s(zero), cons(zero, cons(s(zero), nil))), X).
+% test: dropWhile(cons(zero, cons(zero, cons(s(zero), nil))), X).
+dropWhile(L, DL) :- dropWhile(L, nil, nil, DL).
+dropWhile(Remain, Remain, DL, DL).
+dropWhile(cons(H, T), TempR, TempL, DL) :- g(H, zero), dropWhile(T, TempR, cons(H, TempL), DL).
+dropWhile(cons(H, T), TemoR, TempL, DL) :- dropWhile(T, T, TempL, DL).
 % PARTITION: parition(_>0)
 %test: partition(cons(s(zero), cons(s(s(zero)), cons(zero, cons(zero, nil)))), X, Y).
 %test: partition(X, cons(s(zero), cons(s(s(zero)), nil)), cons(zero, cons(zero, nil))). non va
