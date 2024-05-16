@@ -152,8 +152,14 @@ countA(cons(H, T), Temp, C) :- countA(T, Temp, C).
 %find(L, E) :- search(E, L).
 find(cons(H, T), H).
 find(cons(H, T), E) :- find(T, E).
-% DROP_RIGHT
-
+% DROP_RIGHT: dropRight(n)
+% test: dropRight(cons(1, cons(2, cons(3, cons(4, nil)))), s(zero), X).
+% test: dropRight(cons(1, cons(2, cons(3, cons(4, nil)))), zero, X).
+% test: dropRight(cons(1, cons(2, cons(3, cons(4, nil)))), s(s(s(s(zero)))), X).
+dropRight(L, N, DRL) :- reversed(L, RL), dropRight(RL, zero, N, nil, DRL).
+dropRight(nil, N, N, DRL, DRL).
+dropRight(cons(H, T), TempN, N, TempDRL, DRL) :- l(TempN, N), dropRight(T, s(TempN), N, TempDRL, DRL).
+dropRight(cons(H, T), TempN, N, TempDRL, DRL) :- dropRight(T, TempN, N, cons(H, TempDRL), DRL).
 % DROP_WHILE: dropWhile(_>0)
 % test: dropWhile(cons(s(zero), cons(s(s(zero)), cons(zero, nil))), X).
 % test: dropWhile(cons(s(zero), cons(zero, cons(s(zero), nil))), X).
