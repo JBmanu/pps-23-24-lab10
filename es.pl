@@ -169,8 +169,12 @@ partition(cons(H, T), T1, PL1, T2, PL2) :- partition(T, T1, PL1, cons(H, T2), PL
 reversed(L, RL) :- reversed(L, nil, RL).
 reversed(nil, RL, RL).
 reversed(cons(H, T), M, RL) :- reversed(T, cons(H, M), RL).
-% DROP
-
+% DROP: drop(n) 
+% test: drop(cons(1, cons(2, cons(3, cons(4, nil)))), s(s(zero)), X).
+drop(L, N, DL) :- drop(L, N, nil, DL).
+drop(nil, N, DL, DL).
+drop(cons(H, T), N, TempL, DL) :- size(T, N), drop(T, N, T, DL).
+drop(cons(H, T), N, TempL, DL) :- drop(T, N, TempL, DL).
 % TAKE: take(n)
 % test: take(cons(1, cons(2, cons(3, nil))), s(s(zero)), X).
 % test: take(cons(1, cons(2, cons(3, nil))), X, cons(2, cons(1, nil))).
