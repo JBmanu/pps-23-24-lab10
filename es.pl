@@ -171,6 +171,10 @@ reversed(nil, RL, RL).
 reversed(cons(H, T), M, RL) :- reversed(T, cons(H, M), RL).
 % DROP: drop(n) 
 % test: drop(cons(1, cons(2, cons(3, cons(4, nil)))), s(s(zero)), X).
+% test: drop(cons(1, cons(2, cons(3, cons(4, nil)))), zero, X).
+% test: drop(cons(1, cons(2, cons(3, cons(4, nil)))), X, cons(4, nil)).
+% test: drop(X, s(zero), cons(4, nil)).
+% test: drop(X, Y, Z).
 drop(L, N, DL) :- drop(L, N, nil, DL).
 drop(nil, N, DL, DL).
 drop(cons(H, T), N, TempL, DL) :- size(T, N), drop(T, N, T, DL).
@@ -178,7 +182,20 @@ drop(cons(H, T), N, TempL, DL) :- drop(T, N, TempL, DL).
 % TAKE: take(n)
 % test: take(cons(1, cons(2, cons(3, nil))), s(s(zero)), X).
 % test: take(cons(1, cons(2, cons(3, nil))), X, cons(2, cons(1, nil))).
+% ricodarti di fare reverse
 take(L, N, TL) :- take(L, zero, N, nil, TL).
 take(L1, N, N, TL, TL).
 take(cons(H, T), TempN, N, TempL, TL) :- take(T, s(TempN), N, cons(H, TempL), TL).
 % ZIP
+% cons(1, cons(2, cons(3, nil)))
+% test: zip(cons(1, cons(2, cons(3, nil))), cons(a, cons(b, cons(c, nil))), X).
+% ricodarti di fare reverse
+zip(L1, L2, ZL) :- size(L1, N), size(L2, N), zip(L1, L2, nil, ZL).
+zip(nil, nil, ZL, ZL).
+zip(cons(H, T), cons(H1, T1), Temp, ZL) :- zip(T, T1, cons((H, H1), Temp), ZL).
+
+
+
+
+
+
