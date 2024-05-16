@@ -152,9 +152,17 @@ countA(cons(H, T), Temp, C) :- countA(T, Temp, C).
 %find(L, E) :- search(E, L).
 find(cons(H, T), H).
 find(cons(H, T), E) :- find(T, E).
-% dropRight
-% dropWhile
-% partition
+% DROP_RIGHT
+
+% DROP_WHILE
+
+% PARTITION: parition(_>0)
+%test: partition(cons(s(zero), cons(s(s(zero)), cons(zero, cons(zero, nil)))), X, Y).
+%test: partition(X, cons(s(zero), cons(s(s(zero)), nil)), cons(zero, cons(zero, nil))). non va
+partition(L, PL1, PL2) :- partition(L, nil, PL1, nil, PL2).
+partition(nil, PL1, PL1, PL2, PL2).
+partition(cons(H, T), T1, PL1, T2, PL2) :- g(H, zero), partition(T, cons(H, T1), PL1, T2, PL2).
+partition(cons(H, T), T1, PL1, T2, PL2) :- partition(T, T1, PL1, cons(H, T2), PL2).
 % REVERSED
 % test: reversed(cons(1, cons(2, cons(3, nil))), X).
 % test: reversed(X, cons(1, cons(2, cons(3, nil)))).
@@ -162,6 +170,7 @@ reversed(L, RL) :- reversed(L, nil, RL).
 reversed(nil, RL, RL).
 reversed(cons(H, T), M, RL) :- reversed(T, cons(H, M), RL).
 % DROP
+
 % TAKE: take(n)
 % test: take(cons(1, cons(2, cons(3, nil))), s(zero), X).
 %take(L, N, TL) :- takeT(L, nil, TL).
