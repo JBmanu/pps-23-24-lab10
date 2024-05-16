@@ -172,8 +172,9 @@ reversed(cons(H, T), M, RL) :- reversed(T, cons(H, M), RL).
 % DROP
 
 % TAKE: take(n)
-% test: take(cons(1, cons(2, cons(3, nil))), s(zero), X).
-%take(L, N, TL) :- takeT(L, nil, TL).
-%takeT(Remain, TL, TL).
-%takeT(cons(H, T), Temp, TL) :- takeT(T, cons(H, Temp), TL).
+% test: take(cons(1, cons(2, cons(3, nil))), s(s(zero)), X).
+% test: take(cons(1, cons(2, cons(3, nil))), X, cons(2, cons(1, nil))).
+take(L, N, TL) :- take(L, zero, N, nil, TL).
+take(L1, N, N, TL, TL).
+take(cons(H, T), TempN, N, TempL, TL) :- take(T, s(TempN), N, cons(H, TempL), TL).
 % ZIP
